@@ -1,0 +1,109 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(circle at top, #172747, #070b16 65%);
+    color: #f3f7ff;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    padding: 24px;
+}
+
+h1 {
+    color: #63e6ff;
+    font-size: 44px;
+    letter-spacing: 8px;
+    margin-bottom: 4px;
+}
+
+body > p:first-of-type {
+    color: #9baac7;
+    margin-top: 0;
+}
+
+#orb {
+    width: 155px;
+    height: 155px;
+    border-radius: 50%;
+    margin: 28px 0;
+    background: radial-gradient(circle at 35% 30%, #b8f7ff, #36bde8 35%, #3155c6 75%);
+    box-shadow: 0 0 30px #318bff80, 0 0 70px #318bff35;
+    cursor: pointer;
+    transition: transform 0.25s, box-shadow 0.25s;
+}
+
+#orb:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 45px #63e6ff99, 0 0 85px #318bff55;
+}
+
+#orb.listening {
+    animation: pulse 1s infinite alternate;
+}
+
+@keyframes pulse {
+    from {
+        transform: scale(1);
+        box-shadow: 0 0 30px #318bff80;
+    }
+    to {
+        transform: scale(1.1);
+        box-shadow: 0 0 65px #63e6ffcc;
+    }
+}
+
+#talk {
+    padding: 14px 28px;
+    border: 1px solid #63e6ff70;
+    border-radius: 28px;
+    background: #63e6ff;
+    color: #07111f;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.2s, background 0.2s;
+}
+
+#talk:hover {
+    background: #a0f0ff;
+    transform: translateY(-2px);
+}
+
+#status {
+    color: #63e6ff;
+    font-size: 14px;
+    margin-top: 24px;
+}
+
+#heard {
+    display: none;
+}
+
+#reply {
+    width: min(440px, 90vw);
+    margin-top: 8px;
+    padding: 20px;
+    border: 1px solid #ffffff18;
+    border-radius: 18px;
+    background: #ffffff08;
+    color: #e4ecff;
+    line-height: 1.7;
+    overflow-wrap: anywhere;
+}
+
+#reply a {
+    color: #63e6ff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+#reply a:hover {
+    text-decoration: underline;
+}
