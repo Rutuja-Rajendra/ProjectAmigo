@@ -17,7 +17,7 @@ public class GeminiService {
 	}
 
     @SuppressWarnings("unchecked")
-    public String askGemini(String question) {
+    public String askGemini(String question, List<String> history) {
 
         String apiKey = System.getenv("GEMINI_API_KEY");
 
@@ -26,12 +26,19 @@ public class GeminiService {
                     "GEMINI_API_KEY environment variable is missing.");
         }
 
+        String conversation = String.join("\n", history);
+
         String prompt = """
                 You are Amigo, a friendly personal AI voice assistant.
                 Answer naturally, clearly, and conversationally.
                 Keep answers concise unless more detail is requested.
-                The user asks: 
-                """ + question;
+
+                Previous conversation:
+                %s
+
+                Current question:
+                %s
+                """.formatted(conversation, question);
 
         Map<String, Object> requestBody = Map.of(
         	    "contents", List.of(

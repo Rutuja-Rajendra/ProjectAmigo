@@ -59,21 +59,39 @@ body > p:first-of-type {
     }
 }
 
-#talk {
-    padding: 14px 28px;
-    border: 1px solid #63e6ff70;
-    border-radius: 28px;
-    background: #63e6ff;
-    color: #07111f;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: transform 0.2s, background 0.2s;
+#talk{
+	margin-bottom: 14px;
+	padding: 14px 28px;
+	    border: 1px solid #63e6ff70;
+	    border-radius: 28px;
+	    background: #63e6ff;
+	    color: #07111f;
+	    font-size: 16px;
+	    font-weight: bold;
+	    cursor: pointer;
+	    transition: transform 0.2s, background 0.2s;
+	
 }
+#newConversationBtn {
+	 background: transparent;
+	    color: #5ee7f7;
+	    border: 1px solid #5ee7f7;
+	    padding: 12px 24px;
+	    border-radius: 30px;
+	    cursor: pointer;
+	    font-size: 16px;
+	    margin-top: 8px;
+	    transition: 0.3s ease;
+	}
 
-#talk:hover {
-    background: #a0f0ff;
-    transform: translateY(-2px);
+
+#talk:hover{
+	background: #a0f0ff;
+	    transform: translateY(-2px);
+	
+}
+#newConversationBtn:hover {
+	background: rgba(94, 231, 247, 0.12);
 }
 
 #status {

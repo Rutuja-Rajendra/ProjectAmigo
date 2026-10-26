@@ -4,6 +4,8 @@ const statusText = document.getElementById("status");
         const orb = document.getElementById("orb");
         const talkButton = document.getElementById("talk");
 
+		let conversationHistory = [];
+		
         const SpeechRecognition =
             window.SpeechRecognition ||
             window.webkitSpeechRecognition;
@@ -20,6 +22,8 @@ const statusText = document.getElementById("status");
 
         async function sendCommand(command)  {
             statusText.textContent = "Amigo is thinking...";
+			
+			
 
             try {
                 const result = await fetch("/api/amigo", {
@@ -27,7 +31,10 @@ const statusText = document.getElementById("status");
                     headers: {
                         "Content-Type": "application/json"
                     },
-                    body: JSON.stringify({ command: command })
+					body: JSON.stringify({
+					    command: command,
+					    history: conversationHistory
+					})
                 });
 
                 if (!result.ok) {
@@ -35,6 +42,12 @@ const statusText = document.getElementById("status");
                 }
 
                 const data = await result.json();
+				conversationHistory.push("User: " + command);
+				conversationHistory.push("Amigo: " + data.response);
+				
+				if (conversationHistory.length > 10) {
+				    conversationHistory = conversationHistory.slice(-10);
+				}
 				
 				if (/\bopen\s+(my\s+)?(the\s+)?youtube\b/i.test(command)) {
 				    replyText.innerHTML =
@@ -98,3 +111,10 @@ const statusText = document.getElementById("status");
 
         talkButton.addEventListener("click", startListening);
         orb.addEventListener("click", startListening);
+		
+		
+		document.getElementById("newConversationBtn").addEventListener("click", function() {
+		    conversationHistory = [];
+			
+			replyText.textContent = "Hello! How can I help you?";
+		});

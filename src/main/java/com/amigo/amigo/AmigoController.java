@@ -1,6 +1,7 @@
 
 package com.amigo.amigo;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -28,16 +29,21 @@ public class AmigoController {
 
     @PostMapping("/api/amigo")
     public Map<String, String> processCommand(
-            @RequestBody Map<String, String> request) {
+            @RequestBody Map<String, Object> request) {
+    	
+    	List<String> history = (List<String>) request.getOrDefault(
+    	        "history", List.of());
 
-        String command = request.getOrDefault("command", "").trim();
+    	String command = String.valueOf(
+    	        request.getOrDefault("command", "")
+    	).trim();
 
         if (command.isBlank()) {
             return Map.of("response", "Hey bro, what would you like to ask?");
         }
 
         try {
-            String response = geminiService.askGemini(command);
+            String response = geminiService.askGemini(command, history);
             return Map.of("response", response);
 
         } catch (RestClientException | IllegalStateException e) {
