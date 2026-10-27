@@ -31,8 +31,9 @@ public class AmigoController {
     public Map<String, String> processCommand(
             @RequestBody Map<String, Object> request) {
     	
-    	List<String> history = (List<String>) request.getOrDefault(
-    	        "history", List.of());
+    	List<Map<String, String>> history =
+    	        (List<Map<String, String>>) request.getOrDefault(
+    	                "history", List.of());
 
     	String command = String.valueOf(
     	        request.getOrDefault("command", "")

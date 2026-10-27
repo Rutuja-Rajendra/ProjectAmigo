@@ -17,7 +17,9 @@ public class GeminiService {
 	}
 
     @SuppressWarnings("unchecked")
-    public String askGemini(String question, List<String> history) {
+    public String askGemini(
+            String question,
+            List<Map<String, String>> history){
 
         String apiKey = System.getenv("GEMINI_API_KEY");
 
@@ -26,7 +28,15 @@ public class GeminiService {
                     "GEMINI_API_KEY environment variable is missing.");
         }
 
-        String conversation = String.join("\n", history);
+        StringBuilder conversation = new StringBuilder();
+
+        for (Map<String, String> exchange : history) {
+            conversation.append("User: ")
+                    .append(exchange.get("question"))
+                    .append("\nAmigo: ")
+                    .append(exchange.get("answer"))
+                    .append("\n");
+        }
 
         String prompt = """
                 You are Amigo, a friendly personal AI voice assistant.
@@ -38,7 +48,7 @@ public class GeminiService {
 
                 Current question:
                 %s
-                """.formatted(conversation, question);
+                """.formatted(conversation.toString(), question);
 
         Map<String, Object> requestBody = Map.of(
         	    "contents", List.of(
