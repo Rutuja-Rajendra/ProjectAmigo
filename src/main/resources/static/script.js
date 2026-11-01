@@ -98,13 +98,17 @@ function startListening() {
     }
 
     const recognition = new SpeechRecognition();
+	//recognition.onerror({ error: "audio-capture" });
 	let speechReceived = false;
+	let recognitionError = false;
+	let errorMessage = "";
 
     recognition.lang = "en-IN";
     recognition.continuous = false;
     recognition.interimResults = false;
 
     recognition.onstart = () => {
+		console.log("Listening started");
         statusText.textContent = "Listening... Speak now!";
         orb.classList.add("listening");
         talkButton.textContent = "Listening...";
@@ -127,22 +131,60 @@ function startListening() {
 	};
 
     recognition.onerror = (event) => {
-        statusText.textContent =
-            "Microphone error: " + event.error;
+		
+		
+		console.log("Error received:", event.error);
+		recognitionError = true;
+		    console.log("Speech recognition error:", event.error);
+		
+			errorMessage = event.error;
+			
+		switch(errorMessage)
+		{
+			case "not-allowed": 
+			const notAllowedErrMsg = "Please allow microphone access to use Amigo.";
+			replyText.textContent = notAllowedErrMsg;
+			speak(notAllowedErrMsg);
+			break;
+			
+			case "audio-capture":
+			const audioCaptureErrMsg = "Unable to access your microphone.Please check your microphone connection.";
+			replyText.textContent = audioCaptureErrMsg;
+			speak(audioCaptureErrMsg);
+			break;
+			
+			case "network":
+			const networkErrMsg = "Network error. Please check your internet connection.";
+			replyText.textContent = networkErrMsg;
+			statusText.textContent = "";
+			speak(networkErrMsg);
+			break;
+			
+			default:
+			const defaultErrMsg = "Something went wrong. Please try again.";
+			replyText.textContent = defaultErrMsg;
+			speak(defaultErrMsg);
+			break;
+		}
     };
 
     recognition.onend = () => {
+		console.log("Listening ended");
         orb.classList.remove("listening");
         talkButton.textContent = "Talk to Amigo";
         talkButton.disabled = false;
-		
-		if (!speechReceived) {
-		    const message = "I didn't hear anything. Please try again.";
+			
+		if(errorMessage === "no-speech")
+			{
+				if (!speechReceived) {
+					const message = "I didn't hear anything. Please try again.";
 
-		    replyText.textContent = message;
-			statusText.textContent = "Ready for your next command";
-		    speak(message);
-		}
+					replyText.textContent = message;
+					statusText.textContent = "Ready for your next command";
+					speak(message);
+					}
+			}
+		
     };
 
     recognition.start();
