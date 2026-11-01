@@ -98,6 +98,7 @@ function startListening() {
     }
 
     const recognition = new SpeechRecognition();
+	let speechReceived = false;
 
     recognition.lang = "en-IN";
     recognition.continuous = false;
@@ -110,14 +111,20 @@ function startListening() {
         talkButton.disabled = true;
     };
 
-    recognition.onresult = (event) => {
-        const command =
-            event.results[0][0].transcript.trim();
+	recognition.onresult = (event) => {
+		
+		speechReceived = true;
+	    const command = event.results[0][0].transcript.trim();
 
-        replyText.textContent = "I heard: " + command;
+	    if (command === "") {
+	        statusText.textContent = "I didn't catch that. Please try again.";
+	        return;
+	    }
 
-        sendCommand(command);
-    };
+	    replyText.textContent = "I heard: " + command;
+
+	    sendCommand(command);
+	};
 
     recognition.onerror = (event) => {
         statusText.textContent =
@@ -128,6 +135,10 @@ function startListening() {
         orb.classList.remove("listening");
         talkButton.textContent = "Talk to Amigo";
         talkButton.disabled = false;
+		
+		if (!speechReceived) {
+		        statusText.textContent = "I didn't hear anything. Please try again.";
+		    }
     };
 
     recognition.start();
