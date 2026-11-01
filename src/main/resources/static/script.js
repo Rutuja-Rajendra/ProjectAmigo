@@ -137,8 +137,12 @@ function startListening() {
         talkButton.disabled = false;
 		
 		if (!speechReceived) {
-		        statusText.textContent = "I didn't hear anything. Please try again.";
-		    }
+		    const message = "I didn't hear anything. Please try again.";
+
+		    replyText.textContent = message;
+			statusText.textContent = "Ready for your next command";
+		    speak(message);
+		}
     };
 
     recognition.start();
